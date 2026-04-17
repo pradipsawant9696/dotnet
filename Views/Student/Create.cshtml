@@ -1,0 +1,32 @@
+@model Student
+
+
+
+<h2>Add Student</h2>
+
+<form method="post">
+   <div>
+    Name:
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+
+<div>
+    Roll No:
+   <input asp-for="RollNo" class="form-control" type="number" />
+    <span asp-validation-for="RollNo" class="text-danger"></span>
+</div>
+
+<div>
+    Class:
+    <input asp-for="Class" class="form-control" />
+    <span asp-validation-for="Class" class="text-danger"></span>
+</div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+<!-- ✅ ADD THIS HERE -->
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

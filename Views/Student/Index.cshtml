@@ -1,0 +1,71 @@
+@model System.Data.DataTable
+
+<h2>Students List</h2>
+
+<a href="/Student/Create" class="btn btn-primary">Add Student</a>
+
+<br /><br />
+
+<!-- Dashboard Cards -->
+<div class="row mb-3">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white p-3">
+            <h4>Total Students</h4>
+            <h2>@ViewBag.Total</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-success text-white p-3">
+            <h4>Pass</h4>
+            <h2>@ViewBag.Pass</h2>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-danger text-white p-3">
+            <h4>Fail</h4>
+            <h2>@ViewBag.Fail</h2>
+        </div>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Roll No</th>
+        <th>Class</th>
+        <th>Average</th>
+        <th>Action</th> <!-- ✅ NEW COLUMN -->
+    </tr>
+
+    @foreach (System.Data.DataRow row in Model.Rows)
+    {
+        <tr>
+            <td>@row["ID"]</td>
+            <td>@row["Name"]</td>
+            <td>@row["RollNo"]</td>
+            <td>@row["Class"]</td>
+       <td>
+    @if (row["Average"].ToString() == "Not Assigned")
+    {
+        <span class="text-warning">Not Assigned</span>
+    }
+    else
+    {
+        @String.Format("{0:0.000}", row["Average"])
+    }
+</td>
+            
+
+            <!-- ✅ NEW BUTTONS -->
+            <td>
+                <a href="/Student/AddMarks/@row["ID"]" class="btn btn-warning btn-sm">Add Marks</a>
+                <a href="/Student/Report/@row["ID"]" class="btn btn-info btn-sm">Report</a>
+                <a href="/Student/Edit/@row["ID"]" class="btn btn-primary">Edit</a>
+                <a href="/Student/Delete/@row["ID"]" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

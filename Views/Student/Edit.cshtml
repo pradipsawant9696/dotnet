@@ -1,0 +1,19 @@
+@model Student
+
+<h2>Edit Student</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="ID" />
+
+    Name:
+    <input asp-for="Name" class="form-control" />
+
+    Roll No:
+    <input asp-for="RollNo" class="form-control" />
+
+    Class:
+    <input asp-for="Class" class="form-control" />
+
+    <br />
+    <button class="btn btn-success">Update</button>
+</form>

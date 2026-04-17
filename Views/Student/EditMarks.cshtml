@@ -1,0 +1,28 @@
+@model Marks
+
+<h2>Edit Marks</h2>
+
+<form method="post">
+
+    <input type="hidden" asp-for="MarkID" />
+    <input type="hidden" asp-for="StudentID" />
+
+    <div>
+        Subject:
+        <input asp-for="SubjectName" class="form-control" />
+    </div>
+
+    <div>
+        Marks:
+        <input asp-for="MarksObtained" class="form-control" />
+    </div>
+
+    <div>
+        Max Marks:
+        <input asp-for="MaxMarks" class="form-control" />
+    </div>
+
+    <br />
+    <button class="btn btn-success">Update</button>
+
+</form>

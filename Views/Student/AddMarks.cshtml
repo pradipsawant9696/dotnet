@@ -1,0 +1,34 @@
+@model Marks
+
+<h2>Add Marks</h2>
+
+<form method="post">
+
+    <!-- ✅ Hidden StudentID -->
+    <input type="hidden" asp-for="StudentID" />
+
+   <div>
+    Subject:
+    <input asp-for="SubjectName" class="form-control" />
+    <span asp-validation-for="SubjectName" class="text-danger"></span>
+</div>
+
+<div>
+    Marks:
+    <input asp-for="MarksObtained" class="form-control" />
+    <span asp-validation-for="MarksObtained" class="text-danger"></span>
+</div>
+
+    <div>
+        Max Marks:
+        <input asp-for="MaxMarks" class="form-control" value="100" />
+    </div>
+
+    <br />
+    <button class="btn btn-success">Save</button>
+
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

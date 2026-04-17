@@ -1,0 +1,44 @@
+@model StudentReportViewModel
+
+<h2>Report Card</h2>
+
+<h3>@Model.Student.Name</h3>
+<p>Roll No: @Model.Student.RollNo</p>
+<p>Class: @Model.Student.Class</p>
+
+<table class="table">
+    <tr>
+        <th>Subject</th>
+        <th>Marks</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var m in Model.Marks)
+    {
+        <tr>
+            <td>@m.SubjectName</td>
+            <td>@m.MarksObtained / @m.MaxMarks</td>
+            <td>
+                <a href="/Student/EditMarks/@m.MarkID" class="btn btn-primary btn-sm">Edit</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@if (Model.Marks.Count == 0)
+{
+    <h3 class="text-warning">No Marks Assigned</h3>
+}
+else
+{
+    <h3>Average: @Model.Average.ToString("0.000")</h3>
+
+    @if (Model.Average >= 40)
+    {
+        <h4 style="color:green;">PASS</h4>
+    }
+    else
+    {
+        <h4 style="color:red;">FAIL</h4>
+    }
+}
