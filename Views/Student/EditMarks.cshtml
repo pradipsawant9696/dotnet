@@ -9,20 +9,26 @@
 
     <div>
         Subject:
-        <input asp-for="SubjectName" class="form-control" />
+        <input asp-for="SubjectName" class="form-control" readonly />
     </div>
 
     <div>
         Marks:
         <input asp-for="MarksObtained" class="form-control" />
+        <span asp-validation-for="MarksObtained" class="text-danger"></span>
     </div>
 
     <div>
         Max Marks:
         <input asp-for="MaxMarks" class="form-control" />
+        <span asp-validation-for="MaxMarks" class="text-danger"></span>
     </div>
 
     <br />
     <button class="btn btn-success">Update</button>
 
 </form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

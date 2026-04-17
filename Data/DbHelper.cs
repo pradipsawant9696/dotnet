@@ -197,4 +197,19 @@ public int GetNextRollNo(string studentClass)
         return Convert.ToInt32(cmd.ExecuteScalar());
     }
 }
+
+public bool MarksAlreadyExists(int studentId)
+{
+    using (MySqlConnection con = new MySqlConnection(connectionString))
+    {
+        string query = "SELECT COUNT(*) FROM Marks WHERE StudentID=@id";
+        MySqlCommand cmd = new MySqlCommand(query, con);
+        cmd.Parameters.AddWithValue("@id", studentId);
+
+        con.Open();
+        int count = Convert.ToInt32(cmd.ExecuteScalar());
+
+        return count > 0;
+    }
+}
 }

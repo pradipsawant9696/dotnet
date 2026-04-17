@@ -1,34 +1,42 @@
-@model Marks
+@model MarksEntryViewModel
+
+<div class="text-danger">
+    @Html.ValidationSummary()
+</div>
 
 <h2>Add Marks</h2>
 
 <form method="post">
 
-    <!-- ✅ Hidden StudentID -->
     <input type="hidden" asp-for="StudentID" />
 
-   <div>
-    Subject:
-    <input asp-for="SubjectName" class="form-control" />
-    <span asp-validation-for="SubjectName" class="text-danger"></span>
-</div>
+    <table class="table">
+        <tr>
+            <th>Subject</th>
+            <th>Marks</th>
+            <th>Max Marks</th>
+        </tr>
 
-<div>
-    Marks:
-    <input asp-for="MarksObtained" class="form-control" />
-    <span asp-validation-for="MarksObtained" class="text-danger"></span>
-</div>
+        @for (int i = 0; i < Model.MarksList.Count; i++)
+        {
+            <tr>
+                <td>
+                    <input asp-for="MarksList[i].SubjectName" class="form-control" readonly />
+                </td>
 
-    <div>
-        Max Marks:
-        <input asp-for="MaxMarks" class="form-control" value="100" />
-    </div>
+                <td>
+                    <input asp-for="MarksList[i].MarksObtained" class="form-control" />
+                </td>
 
-    <br />
-    <button class="btn btn-success">Save</button>
+                <td>
+                    <input asp-for="MarksList[i].MaxMarks" class="form-control" />
+                </td>
+
+                <input type="hidden" asp-for="MarksList[i].StudentID" />
+            </tr>
+        }
+    </table>
+
+    <button class="btn btn-success">Save All Marks</button>
 
 </form>
-
-@section Scripts{
-    <partial name="_ValidationScriptsPartial" />
-}

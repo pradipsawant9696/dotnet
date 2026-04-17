@@ -10,6 +10,15 @@ public class StudentController : Controller
         _config = config;
     }
 
+    private List<string> subjects = new List<string>
+{
+    "Math",
+    "Science",
+    "English",
+    "Computer",
+    "Physics"
+};
+
 public IActionResult Index()
 {
     DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
@@ -88,26 +97,45 @@ public IActionResult Create(Student s)
     return View(s);
 }
 
-     public IActionResult AddMarks(int id)
-     {
-         Marks m = new Marks();
-         m.StudentID = id;   // ✅ VERY IMPORTANT
-     
-         return View(m);
-     }
+ public IActionResult AddMarks(int id)
+{
+    MarksEntryViewModel vm = new MarksEntryViewModel();
+    vm.StudentID = id;
+
+    vm.MarksList = subjects.Select(s => new Marks
+    {
+        StudentID = id,
+        SubjectName = s,
+        MaxMarks = 100
+    }).ToList();
+
+    return View(vm);
+}
 
 [HttpPost]
-public IActionResult AddMarks(Marks m)
+public IActionResult AddMarks(MarksEntryViewModel vm)
 {
-    if (ModelState.IsValid)
+    DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
+
+    // ✅ Check duplicate
+    if (db.MarksAlreadyExists(vm.StudentID))
     {
-        DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
-        db.AddMarks(m);
-        return RedirectToAction("Index");
-        Console.WriteLine("StudentID: " + m.StudentID);
-Console.WriteLine("Marks: " + m.MarksObtained);
+        ModelState.AddModelError("", "Marks already added for this student!");
+        return View(vm); // 🔥 return same form with data
     }
-    return View(m);
+
+    // ✅ Validate each subject marks
+    if (!ModelState.IsValid)
+    {
+        return View(vm);
+    }
+
+    foreach (var m in vm.MarksList)
+    {
+        db.AddMarks(m);
+    }
+
+    return RedirectToAction("Index");
 }
 
 public IActionResult Report(int id)
@@ -217,6 +245,28 @@ public JsonResult GetRollNo(string studentClass)
     int rollNo = db.GetNextRollNo(studentClass);
 
     return Json(rollNo);
+}
+
+public IActionResult EditAllMarks(int id)
+{
+    DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
+    var marks = db.GetMarksByStudent(id);
+
+    List<Marks> list = new List<Marks>();
+
+    foreach (DataRow row in marks.Rows)
+    {
+        list.Add(new Marks
+        {
+            MarkID = Convert.ToInt32(row["MarkID"]),
+            StudentID = id,
+            SubjectName = row["SubjectName"].ToString(),
+            MarksObtained = Convert.ToInt32(row["MarksObtained"]),
+            MaxMarks = Convert.ToInt32(row["MaxMarks"])
+        });
+    }
+
+    return View(list);
 }
 
 }
