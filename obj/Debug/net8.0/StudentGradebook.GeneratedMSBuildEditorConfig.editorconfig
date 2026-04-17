@@ -46,6 +46,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/pradip/Desktop/dotnet/StudentGradebook/Views/Student/EditAllMarks.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9FZGl0QWxsTWFya3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/pradip/Desktop/dotnet/StudentGradebook/Views/Student/EditMarks.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9FZGl0TWFya3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

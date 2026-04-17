@@ -9,17 +9,12 @@
 
                 <!-- Header -->
                 <div class="card-header bg-dark text-white rounded-top-4">
-                    <h4 class="mb-0">Add Student Marks</h4>
+                    <h4 class="mb-0">Edit Student Marks</h4>
                 </div>
 
                 <div class="card-body">
 
-                    <!-- Validation -->
-                    <div class="text-danger mb-3">
-                        @Html.ValidationSummary()
-                    </div>
-
-                    <form method="post">
+                    <form method="post" asp-action="UpdateAllMarks">
 
                         <input type="hidden" asp-for="StudentID" />
 
@@ -39,26 +34,23 @@
                                     {
                                         <tr>
                                             <td>
-                                                <input asp-for="MarksList[i].SubjectName"
-                                                       class="form-control bg-light text-center fw-semibold"
-                                                       readonly />
+                                                <input asp-for="MarksList[i].SubjectName" 
+                                                       class="form-control bg-light text-center fw-semibold" readonly />
                                             </td>
 
                                             <td>
-                                                <input asp-for="MarksList[i].MarksObtained"
-                                                       class="form-control text-center rounded-3"
-                                                       placeholder="Enter marks" />
-                                                <span asp-validation-for="MarksList[i].MarksObtained"
-                                                      class="text-danger small"></span>
-                                            </td>
-
-                                            <td>
-                                                <input asp-for="MarksList[i].MaxMarks"
+                                                <input asp-for="MarksList[i].MarksObtained" 
                                                        class="form-control text-center rounded-3" />
-                                                <span asp-validation-for="MarksList[i].MaxMarks"
-                                                      class="text-danger small"></span>
+                                                <span asp-validation-for="MarksList[i].MarksObtained" class="text-danger small"></span>
                                             </td>
 
+                                            <td>
+                                                <input asp-for="MarksList[i].MaxMarks" 
+                                                       class="form-control text-center rounded-3" />
+                                                <span asp-validation-for="MarksList[i].MaxMarks" class="text-danger small"></span>
+                                            </td>
+
+                                            <input type="hidden" asp-for="MarksList[i].MarkID" />
                                             <input type="hidden" asp-for="MarksList[i].StudentID" />
                                         </tr>
                                     }
@@ -70,7 +62,7 @@
                         <!-- Buttons -->
                         <div class="d-flex justify-content-between mt-4">
                             <a href="/Student/Index" class="btn btn-outline-secondary rounded-3">Back</a>
-                            <button class="btn btn-dark rounded-3 px-4">Save All Marks</button>
+                            <button class="btn btn-dark rounded-3 px-4">Update All Marks</button>
                         </div>
 
                     </form>

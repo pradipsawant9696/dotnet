@@ -1,36 +1,57 @@
 @model Student
 
-<h2>Edit Student</h2>
+<div class="container mt-5">
 
-<form method="post">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
 
-    <input type="hidden" asp-for="ID" />
+            <div class="card shadow-sm border-0 rounded-4 p-4">
 
-    <div>
-        Name:
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+                <h3 class="text-center fw-bold mb-4">Edit Student</h3>
+
+                <form method="post">
+
+                    <input type="hidden" asp-for="ID" />
+
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Full Name</label>
+                        <input asp-for="Name" class="form-control rounded-3" />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Class -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Class</label>
+                        <select asp-for="Class" class="form-select rounded-3" id="classDropdown">
+                            <option value="">-- Select Class --</option>
+                            <option value="FY">FY</option>
+                            <option value="SY">SY</option>
+                            <option value="TY">TY</option>
+                        </select>
+                        <span asp-validation-for="Class" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Roll No -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Roll Number</label>
+                        <input asp-for="RollNo" class="form-control rounded-3 bg-light" id="rollNo" readonly />
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-between">
+                        <a href="/Student/Index" class="btn btn-outline-secondary rounded-3">Back</a>
+                        <button class="btn btn-dark rounded-3 px-4">Update</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
     </div>
 
-    <div>
-        Class:
-        <select asp-for="Class" class="form-control" id="classDropdown">
-            <option value="">-- Select Class --</option>
-            <option value="FY">FY</option>
-            <option value="SY">SY</option>
-            <option value="TY">TY</option>
-        </select>
-    </div>
-
-    <div>
-        Roll No:
-        <input asp-for="RollNo" class="form-control" id="rollNo" readonly />
-    </div>
-
-    <br />
-    <button class="btn btn-success">Update</button>
-
-</form>
+</div>
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />

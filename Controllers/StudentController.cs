@@ -97,19 +97,51 @@ public IActionResult Create(Student s)
     return View(s);
 }
 
- public IActionResult AddMarks(int id)
+public IActionResult AddMarks(int id)
 {
-    MarksEntryViewModel vm = new MarksEntryViewModel();
-    vm.StudentID = id;
+    DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
 
-    vm.MarksList = subjects.Select(s => new Marks
+    // ✅ Check if marks already exist
+    if (db.MarksAlreadyExists(id))
+    {
+        // 👉 Load existing marks (EDIT MODE)
+        var marksTable = db.GetMarksByStudent(id);
+
+        List<Marks> marksList = new List<Marks>();
+
+        foreach (DataRow row in marksTable.Rows)
+        {
+            marksList.Add(new Marks
+            {
+                MarkID = Convert.ToInt32(row["MarkID"]),
+                StudentID = id,
+                SubjectName = row["SubjectName"].ToString(),
+                MarksObtained = Convert.ToInt32(row["MarksObtained"]),
+                MaxMarks = Convert.ToInt32(row["MaxMarks"])
+            });
+        }
+
+        MarksEntryViewModel vm = new MarksEntryViewModel
+        {
+            StudentID = id,
+            MarksList = marksList
+        };
+
+        return View("EditAllMarks", vm); // 🔥 go to edit view
+    }
+
+    // 👉 ADD MODE (first time)
+    MarksEntryViewModel addVm = new MarksEntryViewModel();
+    addVm.StudentID = id;
+
+    addVm.MarksList = subjects.Select(s => new Marks
     {
         StudentID = id,
         SubjectName = s,
         MaxMarks = 100
     }).ToList();
 
-    return View(vm);
+    return View("AddMarks", addVm);
 }
 
 [HttpPost]
@@ -267,6 +299,20 @@ public IActionResult EditAllMarks(int id)
     }
 
     return View(list);
+}
+
+
+[HttpPost]
+public IActionResult UpdateAllMarks(MarksEntryViewModel vm)
+{
+    DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
+
+    foreach (var m in vm.MarksList)
+    {
+        db.UpdateMarks(m);
+    }
+
+    return RedirectToAction("Report", new { id = vm.StudentID });
 }
 
 }

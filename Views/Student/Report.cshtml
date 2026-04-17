@@ -1,44 +1,87 @@
 @model StudentReportViewModel
 
-<h2>Report Card</h2>
+<div class="container mt-5">
 
-<h3>@Model.Student.Name</h3>
-<p>Roll No: @Model.Student.RollNo</p>
-<p>Class: @Model.Student.Class</p>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
 
-<table class="table">
-    <tr>
-        <th>Subject</th>
-        <th>Marks</th>
-        <th>Action</th>
-    </tr>
+            <div class="card shadow-sm border-0 rounded-4">
 
-    @foreach (var m in Model.Marks)
-    {
-        <tr>
-            <td>@m.SubjectName</td>
-            <td>@m.MarksObtained / @m.MaxMarks</td>
-            <td>
-                <a href="/Student/EditMarks/@m.MarkID" class="btn btn-primary btn-sm">Edit</a>
-            </td>
-        </tr>
-    }
-</table>
+                <!-- Header -->
+                <div class="card-header bg-dark text-white text-center rounded-top-4">
+                    <h3 class="mb-0">Student Report Card</h3>
+                </div>
 
-@if (Model.Marks.Count == 0)
-{
-    <h3 class="text-warning">No Marks Assigned</h3>
-}
-else
-{
-    <h3>Average: @Model.Average.ToString("0.000")</h3>
+                <div class="card-body">
 
-    @if (Model.Average >= 40)
-    {
-        <h4 style="color:green;">PASS</h4>
-    }
-    else
-    {
-        <h4 style="color:red;">FAIL</h4>
-    }
-}
+                    <!-- Student Info -->
+                    <div class="mb-4">
+                        <h4 class="fw-bold">@Model.Student.Name</h4>
+                        <p class="mb-1"><strong>Roll No:</strong> @Model.Student.RollNo</p>
+                        <p class="mb-0"><strong>Class:</strong> @Model.Student.Class</p>
+                    </div>
+
+                    <!-- Marks Table -->
+                    <div class="table-responsive">
+                        <table class="table table-hover text-center align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Marks Obtained</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var m in Model.Marks)
+                                {
+                                    <tr>
+                                        <td class="fw-semibold">@m.SubjectName</td>
+                                        <td>@m.MarksObtained / @m.MaxMarks</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- No Marks -->
+                    @if (Model.Marks.Count == 0)
+                    {
+                        <div class="text-center mt-3">
+                            <h5 class="text-warning">No Marks Assigned</h5>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Result Section -->
+                        <div class="text-center mt-4">
+
+                            <h4 class="fw-bold">
+                                Average: @Model.Average.ToString("0.00")
+                            </h4>
+
+                            @if (Model.Average >= 40)
+                            {
+                                <span class="badge bg-success fs-6 px-4 py-2 mt-2">PASS</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger fs-6 px-4 py-2 mt-2">FAIL</span>
+                            }
+
+                        </div>
+                    }
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="/Student/Index" class="btn btn-outline-secondary rounded-3">Back</a>
+                        <button onclick="window.print()" class="btn btn-dark rounded-3">Print</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
