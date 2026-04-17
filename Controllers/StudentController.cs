@@ -157,12 +157,26 @@ public IActionResult Edit(int id)
 [HttpPost]
 public IActionResult Edit(Student s)
 {
+    DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
+
+    var oldStudent = db.GetStudentById(s.ID);
+
+    // ✅ Only change roll if class changed
+    if (oldStudent.Class != s.Class)
+    {
+        s.RollNo = db.GetNextRollNo(s.Class).ToString();
+    }
+    else
+    {
+        s.RollNo = oldStudent.RollNo;
+    }
+
     if (ModelState.IsValid)
     {
-        DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
         db.UpdateStudent(s);
         return RedirectToAction("Index");
     }
+
     return View(s);
 }
 

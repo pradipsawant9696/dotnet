@@ -3,17 +3,47 @@
 <h2>Edit Student</h2>
 
 <form method="post">
+
     <input type="hidden" asp-for="ID" />
 
-    Name:
-    <input asp-for="Name" class="form-control" />
+    <div>
+        Name:
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
 
-    Roll No:
-    <input asp-for="RollNo" class="form-control" />
+    <div>
+        Class:
+        <select asp-for="Class" class="form-control" id="classDropdown">
+            <option value="">-- Select Class --</option>
+            <option value="FY">FY</option>
+            <option value="SY">SY</option>
+            <option value="TY">TY</option>
+        </select>
+    </div>
 
-    Class:
-    <input asp-for="Class" class="form-control" />
+    <div>
+        Roll No:
+        <input asp-for="RollNo" class="form-control" id="rollNo" readonly />
+    </div>
 
     <br />
     <button class="btn btn-success">Update</button>
+
 </form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $("#classDropdown").change(function () {
+            var selectedClass = $(this).val();
+
+            if (selectedClass !== "") {
+                $.get("/Student/GetRollNo", { studentClass: selectedClass }, function (data) {
+                    $("#rollNo").val(data);
+                });
+            }
+        });
+    </script>
+}
