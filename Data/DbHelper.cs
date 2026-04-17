@@ -182,4 +182,19 @@ public void UpdateMarks(Marks m)
         cmd.ExecuteNonQuery();
     }
 }
+
+public int GetNextRollNo(string studentClass)
+{
+    using (MySqlConnection con = new MySqlConnection(connectionString))
+    {
+        con.Open();
+
+        string query = "SELECT IFNULL(MAX(RollNo), 0) + 1 FROM Students WHERE Class = @Class";
+
+        MySqlCommand cmd = new MySqlCommand(query, con);
+        cmd.Parameters.AddWithValue("@Class", studentClass);
+
+        return Convert.ToInt32(cmd.ExecuteScalar());
+    }
+}
 }

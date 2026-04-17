@@ -69,11 +69,15 @@ public IActionResult Create(Student s)
 {
     DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
 
-    // ✅ Check duplicate FIRST
-    if (db.IsRollNoExists(s.RollNo))
-    {
-        ModelState.AddModelError("RollNo", $"Roll Number {s.RollNo} already exists!");
-    }
+        s.RollNo = db.GetNextRollNo(s.Class).ToString();
+
+
+    // // ✅ Check duplicate FIRST
+    // if (db.IsRollNoExists(s.RollNo))
+    // {
+    //     ModelState.AddModelError("RollNo", $"Roll Number {s.RollNo} already exists!");
+    // }
+    
 
     if (ModelState.IsValid)
     {
@@ -190,6 +194,15 @@ public IActionResult EditMarks(Marks m)
     }
 
     return View(m);
+}
+
+[HttpGet]
+public JsonResult GetRollNo(string studentClass)
+{
+    DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
+    int rollNo = db.GetNextRollNo(studentClass);
+
+    return Json(rollNo);
 }
 
 }
