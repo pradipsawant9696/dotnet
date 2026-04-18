@@ -212,4 +212,26 @@ public bool MarksAlreadyExists(int studentId)
         return count > 0;
     }
 }
+
+public List<string> GetSubjectsByClass(string studentClass)
+{
+    List<string> subjects = new List<string>();
+
+    using (MySqlConnection con = new MySqlConnection(connectionString))
+    {
+        string query = "SELECT SubjectName FROM Subjects WHERE Class=@Class";
+        MySqlCommand cmd = new MySqlCommand(query, con);
+        cmd.Parameters.AddWithValue("@Class", studentClass);
+
+        con.Open();
+        var dr = cmd.ExecuteReader();
+
+        while (dr.Read())
+        {
+            subjects.Add(dr["SubjectName"].ToString());
+        }
+    }
+
+    return subjects;
+}
 }

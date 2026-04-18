@@ -101,10 +101,14 @@ public IActionResult AddMarks(int id)
 {
     DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
 
-    // ✅ Check if marks already exist
+    var student = db.GetStudentById(id);
+
+    // 🔥 Get subjects based on class
+    var subjects = db.GetSubjectsByClass(student.Class);
+
+    // If marks already exist → edit mode
     if (db.MarksAlreadyExists(id))
     {
-        // 👉 Load existing marks (EDIT MODE)
         var marksTable = db.GetMarksByStudent(id);
 
         List<Marks> marksList = new List<Marks>();
@@ -121,27 +125,26 @@ public IActionResult AddMarks(int id)
             });
         }
 
-        MarksEntryViewModel vm = new MarksEntryViewModel
+        return View("EditAllMarks", new MarksEntryViewModel
         {
             StudentID = id,
             MarksList = marksList
-        };
-
-        return View("EditAllMarks", vm); // 🔥 go to edit view
+        });
     }
 
-    // 👉 ADD MODE (first time)
-    MarksEntryViewModel addVm = new MarksEntryViewModel();
-    addVm.StudentID = id;
-
-    addVm.MarksList = subjects.Select(s => new Marks
+    // Add mode
+    var vm = new MarksEntryViewModel
     {
         StudentID = id,
-        SubjectName = s,
-        MaxMarks = 100
-    }).ToList();
+        MarksList = subjects.Select(s => new Marks
+        {
+            StudentID = id,
+            SubjectName = s,
+            MaxMarks = 100
+        }).ToList()
+    };
 
-    return View("AddMarks", addVm);
+    return View(vm);
 }
 
 [HttpPost]
