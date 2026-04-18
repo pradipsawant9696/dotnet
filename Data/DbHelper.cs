@@ -234,4 +234,24 @@ public List<string> GetSubjectsByClass(string studentClass)
 
     return subjects;
 }
+public int GetStudentIdByClassAndRoll(string studentClass, string rollNo)
+{
+    using (MySqlConnection con = new MySqlConnection(connectionString))
+    {
+        string query = "SELECT ID FROM Students WHERE Class=@Class AND RollNo=@RollNo";
+
+        MySqlCommand cmd = new MySqlCommand(query, con);
+        cmd.Parameters.AddWithValue("@Class", studentClass);
+        cmd.Parameters.AddWithValue("@RollNo", rollNo);
+
+        con.Open();
+        var result = cmd.ExecuteScalar();
+
+        if (result != null)
+            return Convert.ToInt32(result);
+
+        return 0; // not found
+    }
+}
+
 }

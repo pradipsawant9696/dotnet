@@ -1,5 +1,12 @@
 @model System.Data.DataTable
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
 <div class="container mt-4">
 
     <!-- Header -->
@@ -41,6 +48,23 @@
             <option value="TY">TY</option>
         </select>
     </div>
+
+    <div class="card shadow-sm border-0 rounded-4 p-3 mb-3">
+    <form method="post" action="/Student/SearchStudent" class="d-flex gap-2 align-items-center">
+
+        <select name="Class" class="form-select w-auto" required>
+            <option value="">Select Class</option>
+            <option value="FY">FY</option>
+            <option value="SY">SY</option>
+            <option value="TY">TY</option>
+        </select>
+
+        <input type="number" name="RollNo" class="form-control w-auto" placeholder="Enter Roll No" required />
+
+        <button class="btn btn-dark">Search</button>
+
+    </form>
+</div>
 
     <!-- Table -->
     <div class="card shadow-sm rounded-4">

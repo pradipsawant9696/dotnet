@@ -318,4 +318,20 @@ public IActionResult UpdateAllMarks(MarksEntryViewModel vm)
     return RedirectToAction("Report", new { id = vm.StudentID });
 }
 
+[HttpPost]
+public IActionResult SearchStudent(string Class, string RollNo)
+{
+    DbHelper db = new DbHelper(_config.GetConnectionString("DefaultConnection"));
+
+    int studentId = db.GetStudentIdByClassAndRoll(Class, RollNo);
+
+    if (studentId == 0)
+    {
+        TempData["Error"] = "Student not found!";
+        return RedirectToAction("Index");
+    }
+
+    return RedirectToAction("Report", new { id = studentId });
+}
+
 }
