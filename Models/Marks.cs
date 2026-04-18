@@ -14,6 +14,6 @@ public class Marks
     public int MarksObtained { get; set; }
 
     [Required]
-    [Range(1, 100)]
+    [Range(1, 1000)]
     public int MaxMarks { get; set; }
 }
